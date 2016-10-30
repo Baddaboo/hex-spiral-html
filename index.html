@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Title</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.7.22/webcomponents-lite.min.js"></script>
     <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.5.0/lib/paper-slider/paper-slider.html">
@@ -52,14 +52,17 @@
                 var side_length = hexagon.getAttribute("width");
                 var offsetX = 0;
                 var offsetY = side_length*(1 - Math.sqrt(3)/2)/2;
-                hexagon.querySelector('polygon').setAttribute('points',
+                var hex_polygon = hexagon.querySelector('polygon');
+                hex_polygon.setAttribute('points',
                           offsetX+side_length/4 + "," + offsetY + " "
                         + offsetX+side_length*3/4 + "," + offsetY + " "
                         + offsetX+side_length + "," + parseFloat(offsetY + side_length*Math.sqrt(3)/4) + " "
                         + offsetX+side_length*3/4 + "," + parseFloat(offsetY + side_length*Math.sqrt(3)/2) + " "
                         + offsetX+side_length/4 + "," + parseFloat(offsetY + side_length*Math.sqrt(3)/2) + " "
                         + offsetX + "," + parseFloat(offsetY + side_length*Math.sqrt(3)/4));
-                hexagon.style = "fill:transparent;stroke:black;stroke-width:1";
+                hex_polygon.setAttribute('fill', 'transparent');
+                hex_polygon.setAttribute('stroke', 'black');
+                hex_polygon.setAttribute('stroke-width', 1);
             }
         }
         function applyTransform(hexagon, amount) {
