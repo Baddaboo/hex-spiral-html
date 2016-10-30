@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/0.7.22/webcomponents-lite.min.js"></script>
+    <link rel="import" href="https://cdn.rawgit.com/download/polymer-cdn/1.5.0/lib/paper-slider/paper-slider.html">
+    <style>
+        .hexagon {
+            position: absolute;
+        }
+        #control-container {
+            position: absolute;
+            width: 100%;
+            top: 30%;
+        }
+        #hexagon-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+        #slider {
+            position: relative;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="control-container">
+        <div id="hexagon-container">
+            <svg class="hexagon" width="200" height="200">
+                <polygon></polygon>
+            </svg>
+        </div>
+        <paper-slider id="slider" min="-50" max="50" value="0"></paper-slider>
+    </div>
+    <script>
+        var num_hexagons = 10;
+        function hexagons() {
+            return document.getElementsByClassName("hexagon");
+        }
+        function init() {
+            var baseHex = hexagons()[0];
+            if (baseHex) {
+                for (var idx = 1; idx < num_hexagons; idx++) {
+                    document.getElementById("hexagon-container").appendChild(baseHex.cloneNode(true));
+                }
+            }
+            var hexagon_array = hexagons();
+            for (var idx = 0; idx < num_hexagons; idx++) {
+                var hexagon = hexagon_array[idx];
+                var side_length = hexagon.getAttribute("width");
+                var offsetX = 0;
+                var offsetY = side_length*(1 - Math.sqrt(3)/2)/2;
+                hexagon.querySelector('polygon').setAttribute('points',
+                          offsetX+side_length/4 + "," + offsetY + " "
+                        + offsetX+side_length*3/4 + "," + offsetY + " "
+                        + offsetX+side_length + "," + parseFloat(offsetY + side_length*Math.sqrt(3)/4) + " "
+                        + offsetX+side_length*3/4 + "," + parseFloat(offsetY + side_length*Math.sqrt(3)/2) + " "
+                        + offsetX+side_length/4 + "," + parseFloat(offsetY + side_length*Math.sqrt(3)/2) + " "
+                        + offsetX + "," + parseFloat(offsetY + side_length*Math.sqrt(3)/4));
+                hexagon.style = "fill:transparent;stroke:black;stroke-width:1";
+            }
+        }
+        function applyTransform(hexagon, amount) {
+            var scaleAmount = 1 - amount/100
+            hexagon.style.transform = "scale(" + scaleAmount + "," + scaleAmount + ") rotate(" + amount + "deg)";
+        }
+        document.addEventListener('WebComponentsReady', function() {
+            var slider = document.querySelector('#slider');
+            slider.addEventListener('immediate-value-change', function() {
+                var hexagon_array = hexagons();
+                for (var idx = 0; idx < num_hexagons; idx++) {
+                    applyTransform(hexagon_array[idx], slider.immediateValue * [idx] * 0.1);
+                }
+            });
+            slider.addEventListener('mousedown', function() {
+
+            })
+        });
+
+        init();
+    </script>
+</body>
+</html>
