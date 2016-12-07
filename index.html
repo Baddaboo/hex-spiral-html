@@ -8,6 +8,7 @@
     <style>
         .hexagon {
             position: absolute;
+            transition: 0.2s ease-in-out;
         }
         #control-container {
             position: absolute;
@@ -32,7 +33,7 @@
                 <polygon></polygon>
             </svg>
         </div>
-        <paper-slider id="slider" min="-50" max="50" value="0"></paper-slider>
+        <paper-slider id="slider" min="-100" max="100" value="0"></paper-slider>
     </div>
     <script>
         var num_hexagons = 10;
